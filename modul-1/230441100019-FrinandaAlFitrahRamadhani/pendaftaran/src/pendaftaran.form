@@ -361,7 +361,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Perempuan"/>
               </Properties>
-            </Component>
+            </Component>           
             <Component class="javax.swing.JLabel" name="LMikat">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Minat/Bakat :"/>

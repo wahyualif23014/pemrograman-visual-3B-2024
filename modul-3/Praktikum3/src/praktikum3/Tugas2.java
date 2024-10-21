@@ -521,109 +521,107 @@ public class Tugas2 extends javax.swing.JFrame {
             
         
 //         Januari
-        if ((validasijan = true)) {
-            validasijan = false;
+        if ((validasijan == true)) {
             
                rowData [2] = "lunas"; 
                
-            
 
         } else {
             rowData [2] = "nunggak";
         }
 //
 //        // Februari
-        if (validasifeb = true) {
-
+        if (validasifeb == true) {
+           
             rowData [3] = "lunas";
         } else {
             rowData [3] = "nunggak";
         }
 //
 //        // Maret
-        if (validasimar = true) {
+        if (validasimar == true) {
 
-            logpembayaran.append("Bulan Maret = Lunas\n");
+            rowData [4] = "lunas";
         } else {
-            logpembayaran.append("Bulan Maret = Menunggak\n");
+            rowData [4] = "nunggak";
         }
 
 //        // April
-//        if (inapril.isSelected()) {
-//            validasiapr = true;
-//            logpembayaran.append("Bulan April = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan April = Menunggak\n");
-//        }
+        if (validasiapr == true) {
+            
+            rowData [5] = "lunas";
+        } else{
+            rowData [5] = "nunggak";
+        }
 //
 //        // Mei
-//        if (inmei.isSelected()) {
-//            validasimei = true;
-//            logpembayaran.append("Bulan Mei = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan Mei = Menunggak\n");
-//        }
+        if (validasimei == true) {
+            
+            rowData [6] = "lunas";
+        } else {
+            rowData [6] = "nunggak";
+        }
 //
 //        // Juni
-//        if (injuni.isSelected()) {
-//            validasijun = true;
-//            logpembayaran.append("Bulan Juni = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan Juni = Menunggak\n");
-//        }
-//
-//        // Juli
-//        if (injuli.isSelected()) {
-//            validasijul = true;
-//            logpembayaran.append("Bulan Juli = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan Juli = Menunggak\n");
-//        }
+        if (validasijun == true) {
+            rowData [7] = "lunas";
+        } else {
+            rowData [7] = "nunggak";
+        }
+
+        // Juli
+        if (validasijul == true) {
+            
+            rowData [8] = "lunas";
+        } else {
+            rowData [8] = "nunggak";
+        }
 //
 //        // Agustus
-//        if (inagustus.isSelected()) {
-//            validasiagu = true;
-//            logpembayaran.append("Bulan Agustus = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan Agustus = Menunggak\n");
-//        }
+        if (validasiagu == true) {
+            
+            rowData [9] = "lunas";
+        } else {
+            rowData [9] = "nunggak";
+        }
 //
 //        // September
-//        if (inseptember.isSelected()) {
-//            validasisep = true;
-//            logpembayaran.append("Bulan September = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan September = Menunggak\n");
-//        }
+        if (validasisep == true) {
+            
+            rowData [10] = "lunas";
+        } else {
+           rowData [10] = "nunggak";
+        }
 //
 //        // Oktober
-//        if (inoktober.isSelected()) {
-//            validasiokt = true;
-//            logpembayaran.append("Bulan Oktober = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan Oktober = Menunggak\n");
-//        }
-//
+        if ( validasiokt == true) {
+            
+            rowData [11] = "lunas";
+        } else {
+            rowData [11] = "nunggak";
+        }
+
 //        // November
-//        if (innovember.isSelected()) {
-//            validasinov = true;
-//            logpembayaran.append("Bulan November = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan November = Menunggak\n");
-//        }
+        if (validasinov == true ) {
+            
+            rowData [12] = "lunas";
+        } else {
+            rowData [12] = "nunggak";
+        }
 //
 //        // Desember
-//        if (indesember.isSelected()) {
-//            validasides = true;
-//            logpembayaran.append("Bulan Desember = Lunas\n");
-//        } else {
-//            logpembayaran.append("Bulan Desember = Menunggak\n");
-//        }
+        if ( validasides == true) {
+             
+            rowData [13] = "lunas";
+        } else {
+            rowData [13] = "nunggak";
+        }
 //
-//        if (validasijan == true && validasifeb == true && validasimar == true && validasiapr == true && validasimei == true && validasijun == true && validasijul == true && validasiagu == true && validasisep == true && validasiokt == true && validasinov == true && validasides == true) {
-//
-//            lunas.setText("LUNAS");
-//        }
+        if (validasijan == true && validasifeb == true && validasimar == true && validasiapr == true && validasimei == true && validasijun == true && validasijul == true && validasiagu == true && validasisep == true && validasiokt == true && validasinov == true && validasides == true) {
+
+            rowData [1] = "LUNAS";
+        }else
+            rowData [1] = "MENUNGGAK";
 
 tabel.addRow(rowData);
         
@@ -801,7 +799,7 @@ tabel.addRow(rowData);
                 //
                 //
                 //        }\
-            System.out.println("maret menjadi"+ mar);
+//            System.out.println?("maret menjadi"+ mar);
     }//GEN-LAST:event_HitungActionPerformed
 
     private void indesemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indesemberActionPerformed

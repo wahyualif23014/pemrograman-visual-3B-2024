@@ -1,0 +1,905 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package tgsmdl5;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
+public class managemen extends javax.swing.JFrame {
+
+    Connection conn;
+    private DefaultTableModel modelKaryawan;
+    private DefaultTableModel modelProyek;
+    private DefaultTableModel modelTransaksiProyek;
+
+    public managemen() {
+        initComponents();
+        
+        conn = koneksi.getConnection();
+        
+        modelKaryawan = new DefaultTableModel();
+        tbl_karyawan.setModel(modelKaryawan);
+        modelKaryawan.addColumn("ID");
+        modelKaryawan.addColumn("Nama");
+        modelKaryawan.addColumn("JABATAN");
+        modelKaryawan.addColumn("DEPARTEMEN");
+        loadDataKaryawan();
+        
+        modelProyek = new DefaultTableModel();
+        tbl_proyek.setModel(modelProyek);
+        modelProyek.addColumn("ID");
+        modelProyek.addColumn("Nama Proyek");
+        modelProyek.addColumn("Durasi Pengerjaan");
+        loadDataProyek(); 
+        
+        modelTransaksiProyek = new DefaultTableModel();
+        tbl_Transaksi.setModel(modelTransaksiProyek);
+        modelTransaksiProyek.addColumn("NAMA KARYAWAN");
+        modelTransaksiProyek.addColumn("NAMA PROYEK");
+        modelTransaksiProyek.addColumn("PERAN");
+        loadDataTransaksiProyek();
+    }
+    
+    private void loadDataKaryawan() {
+        modelKaryawan.setRowCount(0);
+
+        try {
+            String sql = "SELECT * FROM karyawan";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+               // Menambahkan baris ke dalam model tabel
+               modelKaryawan.addRow(new Object[]{
+               rs.getInt("id"),
+               rs.getString("nama"),
+               rs.getString("jabatan"),
+               rs.getString("departemen")
+             });
+            }
+        } catch (SQLException e) {
+           System.out.println("Error Save Data" + e.getMessage());
+         }
+      }
+    private void loadDataProyek  () {
+        modelProyek.setRowCount(0);
+
+        try {
+            String sql = "SELECT * FROM proyek";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+               // Menambahkan baris ke dalam model tabel
+               modelProyek.addRow(new Object[]{
+               rs.getInt("id"),
+               rs.getString("NamaProyek"),
+               rs.getInt("DurasiPengerjaan")
+             });
+            }
+        } catch (SQLException e) {
+           System.out.println("Error Save Data" + e.getMessage());
+         }
+      }
+
+    private void loadDataTransaksiProyek() {
+    modelTransaksiProyek.setRowCount(0);
+
+    String proyek = "SELECT id, NamaProyek FROM proyek";
+    String karyawan = "SELECT id, Nama FROM karyawan";
+    cbkaryawan.removeAllItems();
+    cbproyek.removeAllItems();
+
+    try (PreparedStatement psProyek = conn.prepareStatement(proyek);
+         ResultSet rsProyek = psProyek.executeQuery()) {
+
+        while (rsProyek.next()) {
+            String namaProyek = rsProyek.getString("NamaProyek");
+            cbproyek.addItem(namaProyek);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error Loading Data (Proyek): " + e.getMessage());
+    }
+
+    try (PreparedStatement psKaryawan = conn.prepareStatement(karyawan);
+         ResultSet rsKaryawan = psKaryawan.executeQuery()) {
+
+        while (rsKaryawan.next()) {
+            String namaKaryawan = rsKaryawan.getString("Nama");
+            cbkaryawan.addItem(namaKaryawan);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error Loading Data (Karyawan): " + e.getMessage());
+    }
+
+    String sql = "SELECT t.id_karyawan, k.Nama, t.id_proyek, p.NamaProyek, t.peran " +
+                 "FROM transaksi t " +
+                 "JOIN karyawan k ON t.id_karyawan = k.id " +
+                 "JOIN proyek p ON t.id_proyek = p.id";
+
+    try (PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            modelTransaksiProyek.addRow(new Object[]{
+                rs.getString("Nama"),          
+                rs.getString("NamaProyek"),   
+                rs.getString("peran")          
+            });
+        }
+    } catch (SQLException e) {
+        System.out.println("Error Loading Data (proyek): " + e.getMessage());
+    }
+}
+    
+ 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        tf_idKaryawan = new javax.swing.JTextField();
+        Tf_jabatan = new javax.swing.JTextField();
+        Tf_departemen = new javax.swing.JTextField();
+        tf_nama = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        btn_tambahKaryawan = new javax.swing.JButton();
+        btn_editKaryawan = new javax.swing.JButton();
+        btn_deleteKaryawan = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_karyawan = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        Tf_idProyek = new javax.swing.JTextField();
+        Tf_durasi = new javax.swing.JTextField();
+        Tf_NamaProyek = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_proyek = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        btnTambahProyek = new javax.swing.JButton();
+        btnEditProyek = new javax.swing.JButton();
+        btnDeleteProyek = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_Transaksi = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        TFperan = new javax.swing.JTextField();
+        cbkaryawan = new javax.swing.JComboBox<>();
+        cbproyek = new javax.swing.JComboBox<>();
+        jPanel10 = new javax.swing.JPanel();
+        btnTambahTransaksi = new javax.swing.JButton();
+        btnEditTransaksi = new javax.swing.JButton();
+        btnDeleteTransaksi = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane1.setBackground(new java.awt.Color(0, 102, 102));
+
+        jPanel2.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("ID :");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(38, 55, 0, 0);
+        jPanel2.add(jLabel2, gridBagConstraints);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("JABATAN :");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(35, 55, 0, 0);
+        jPanel2.add(jLabel3, gridBagConstraints);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("DEPARTEMEN :");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(35, 71, 0, 0);
+        jPanel2.add(jLabel4, gridBagConstraints);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("NAMA :");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(38, 71, 0, 0);
+        jPanel2.add(jLabel5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 87;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(35, 17, 0, 0);
+        jPanel2.add(tf_idKaryawan, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 86;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(32, 18, 0, 0);
+        jPanel2.add(Tf_jabatan, gridBagConstraints);
+
+        Tf_departemen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Tf_departemenActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 128;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(32, 12, 0, 0);
+        jPanel2.add(Tf_departemen, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 128;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(35, 12, 0, 0);
+        jPanel2.add(tf_nama, gridBagConstraints);
+
+        jPanel5.setLayout(new java.awt.GridLayout(0, 1));
+
+        btn_tambahKaryawan.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btn_tambahKaryawan.setText("Tambah");
+        btn_tambahKaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_tambahKaryawanActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btn_tambahKaryawan);
+
+        btn_editKaryawan.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btn_editKaryawan.setText("Edit");
+        btn_editKaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editKaryawanActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btn_editKaryawan);
+
+        btn_deleteKaryawan.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btn_deleteKaryawan.setText("Delete");
+        btn_deleteKaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteKaryawanActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btn_deleteKaryawan);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 26;
+        gridBagConstraints.ipady = 38;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(82, 42, 0, 17);
+        jPanel2.add(jPanel5, gridBagConstraints);
+
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tbl_karyawan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "NAMA", "JABATAN", "DEPARTEMEN"
+            }
+        ));
+        jScrollPane1.setViewportView(tbl_karyawan);
+
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 270));
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = -2;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(31, 6, 146, 0);
+        jPanel2.add(jPanel6, gridBagConstraints);
+
+        jTabbedPane1.addTab("Karyawan", jPanel2);
+
+        jPanel3.setBackground(new java.awt.Color(0, 204, 204));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setText("ID :");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("DURASI PENGERJAAN :");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel8.setText("NAMA PROYEK :");
+
+        Tf_NamaProyek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Tf_NamaProyekActionPerformed(evt);
+            }
+        });
+
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tbl_proyek.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ID", "NAMA PROYEK", "DURASI PENGERJAAN"
+            }
+        ));
+        jScrollPane2.setViewportView(tbl_proyek);
+
+        jPanel7.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 330));
+
+        jPanel8.setLayout(new java.awt.GridLayout(0, 1));
+
+        btnTambahProyek.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnTambahProyek.setText("Tambah");
+        btnTambahProyek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahProyekActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnTambahProyek);
+
+        btnEditProyek.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnEditProyek.setText("Edit");
+        btnEditProyek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditProyekActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnEditProyek);
+
+        btnDeleteProyek.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnDeleteProyek.setText("Delete");
+        btnDeleteProyek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteProyekActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnDeleteProyek);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(Tf_idProyek, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Tf_NamaProyek, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Tf_durasi, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(87, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel8)
+                    .addComponent(Tf_idProyek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tf_NamaProyek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(Tf_durasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Proyek", jPanel3);
+
+        jPanel4.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel4.setForeground(new java.awt.Color(0, 153, 153));
+
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tbl_Transaksi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "NAMA KARYAWAN", "NAMA PROYEK", "PERAN"
+            }
+        ));
+        jScrollPane3.setViewportView(tbl_Transaksi);
+
+        jPanel9.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 270));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel9.setText("Nama Karyawan :");
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel10.setText("Nama Proyek :");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel11.setText("Peran :");
+
+        cbproyek.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+
+        jPanel10.setLayout(new java.awt.GridLayout(0, 1));
+
+        btnTambahTransaksi.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnTambahTransaksi.setText("Tambah");
+        btnTambahTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahTransaksiActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnTambahTransaksi);
+
+        btnEditTransaksi.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnEditTransaksi.setText("Edit");
+        btnEditTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditTransaksiActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnEditTransaksi);
+
+        btnDeleteTransaksi.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnDeleteTransaksi.setText("Delete");
+        btnDeleteTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteTransaksiActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnDeleteTransaksi);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbkaryawan, 0, 223, Short.MAX_VALUE)
+                            .addComponent(cbproyek, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TFperan)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(66, 66, 66)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(115, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(cbkaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(cbproyek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(TFperan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(94, 94, 94))))
+        );
+
+        jTabbedPane1.addTab("TransaksiProyek", jPanel4);
+
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Copperplate Gothic Bold", 3, 14)); // NOI18N
+        jLabel1.setText("APLIKASI MANAGEMEN KARYAWAN  DAN PROYEK");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 420, 40));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void Tf_NamaProyekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Tf_NamaProyekActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Tf_NamaProyekActionPerformed
+
+    private void btn_tambahKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tambahKaryawanActionPerformed
+            try{
+             String sql = "INSERT INTO karyawan (nama, jabatan,departemen) VALUES (?, ?,?)";
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ps.setString(1, tf_nama.getText());
+             ps.setString(2, Tf_jabatan.getText());
+             ps.setString(3, Tf_departemen.getText());
+             ps.executeUpdate();
+             JOptionPane.showMessageDialog(this, "Data Karyawan berhasil diTambahkan");
+             //
+             loadDataKaryawan();
+             loadDataTransaksiProyek();
+           } catch (SQLException e) {
+             System.out.println("Error Save Data" + e.getMessage());
+           }
+    }//GEN-LAST:event_btn_tambahKaryawanActionPerformed
+
+    private void btnTambahProyekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahProyekActionPerformed
+            try{
+             String sql = "INSERT INTO proyek (NamaProyek,DurasiPengerjaan) VALUES (?, ?)";
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ps.setString(1, Tf_NamaProyek.getText());
+             ps.setInt(2, Integer.parseInt(Tf_durasi.getText()));
+             ps.executeUpdate();
+             JOptionPane.showMessageDialog(this, "Data proyek berhasil diTambahkan");
+             //
+             loadDataProyek();
+             loadDataTransaksiProyek();
+           } catch (SQLException e) {
+             System.out.println("Error Save Data" + e.getMessage());
+           }
+    }//GEN-LAST:event_btnTambahProyekActionPerformed
+
+    private void btn_editKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editKaryawanActionPerformed
+              try {
+              String sql = "UPDATE karyawan SET nama = ?, jabatan = ?, departemen = ? WHERE id = ?";
+              PreparedStatement ps = conn.prepareStatement(sql);
+              ps.setString(1, tf_nama.getText());
+              ps.setString(2, Tf_jabatan.getText());
+              ps.setString(3, Tf_departemen.getText());
+              ps.setInt(4, Integer.parseInt(tf_idKaryawan.getText()));
+              ps.executeUpdate();
+              JOptionPane.showMessageDialog(this, "Data berhasil di edit");
+              loadDataKaryawan();
+              loadDataTransaksiProyek();
+          }  catch (SQLException e) {
+              System.out.println("Error Save Data" + e.getMessage());
+          }
+    }//GEN-LAST:event_btn_editKaryawanActionPerformed
+
+    private void btnEditProyekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProyekActionPerformed
+             try {
+              String sql = "UPDATE proyek SET NamaProyek = ?, DurasiPengerjaan = ? WHERE id = ?";
+              PreparedStatement ps = conn.prepareStatement(sql);
+              ps.setString(1, Tf_NamaProyek.getText());
+              ps.setInt(2, Integer.parseInt(Tf_durasi.getText()));
+              ps.setInt(3, Integer.parseInt(Tf_idProyek.getText()));
+              ps.executeUpdate();
+              JOptionPane.showMessageDialog(this, "Data berhasil di edit");
+              loadDataProyek();
+              loadDataTransaksiProyek();
+          }  catch (SQLException e) {
+              System.out.println("Error Save Data" + e.getMessage());
+          }
+    }//GEN-LAST:event_btnEditProyekActionPerformed
+
+    private void btn_deleteKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteKaryawanActionPerformed
+         try  {
+              String sql = "DELETE FROM karyawan WHERE id = ?";
+              PreparedStatement ps = conn.prepareStatement(sql);
+              ps.setInt(1, Integer.parseInt(tf_idKaryawan.getText()));
+              ps.executeUpdate();
+              JOptionPane.showMessageDialog(this, "Data berhasil di hapus");
+              loadDataKaryawan();
+              loadDataTransaksiProyek();
+         } catch (SQLException e) {
+              System.out.println("Error Save Data" + e.getMessage());
+          }
+    }//GEN-LAST:event_btn_deleteKaryawanActionPerformed
+
+    private void btnDeleteProyekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteProyekActionPerformed
+          try  {
+              String sql = "DELETE FROM proyek WHERE id = ?";
+              PreparedStatement ps = conn.prepareStatement(sql);
+              ps.setInt(1, Integer.parseInt(Tf_idProyek.getText()));
+              ps.executeUpdate();
+              JOptionPane.showMessageDialog(this, "Data berhasil di hapus");
+              loadDataProyek();
+              loadDataTransaksiProyek();
+         } catch (SQLException e) {
+              System.out.println("Error Save Data" + e.getMessage());
+          }
+    }//GEN-LAST:event_btnDeleteProyekActionPerformed
+
+    private void Tf_departemenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Tf_departemenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Tf_departemenActionPerformed
+
+    private void btnTambahTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahTransaksiActionPerformed
+        try {
+        String selectedKaryawan = cbkaryawan.getSelectedItem().toString();
+        String selectedProyek = cbproyek.getSelectedItem().toString();
+        String peran = TFperan.getText();
+        
+        int karyawanId = getKaryawanId(selectedKaryawan);
+        int proyekId = getProyekId(selectedProyek);
+        
+            String sql = "INSERT INTO transaksi (id_karyawan, id_proyek, peran) VALUES (?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, karyawanId);
+            ps.setInt(2, proyekId);
+            ps.setString(3, peran);
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this, "Data berhasil di tambahkan");
+            loadDataTransaksiProyek();
+      
+    } catch (SQLException e) {
+        System.out.println("Error Save Data Transaksi: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnTambahTransaksiActionPerformed
+
+    private void btnEditTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTransaksiActionPerformed
+            try {
+        String karyawanBaru = cbkaryawan.getSelectedItem().toString();
+        String proyekBaru = cbproyek.getSelectedItem().toString();
+        String peranBaru = TFperan.getText();
+        
+        int karyawanIdBaru = getKaryawanId(karyawanBaru);
+        int proyekIdBaru = getProyekId(proyekBaru);
+        
+        String sql = "UPDATE transaksi SET peran = ? WHERE id_karyawan = ? AND id_proyek = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, peranBaru);         
+        ps.setInt(2, karyawanIdBaru);       
+        ps.setInt(3, proyekIdBaru);         
+        ps.executeUpdate();
+        
+        JOptionPane.showMessageDialog(this, "Data berhasil di edit");     
+        loadDataTransaksiProyek(); // Memuat ulang tabel transaksi untuk menampilkan perubahan
+    } catch (SQLException e) {
+        System.out.println("Error Update Data Transaksi: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error saat memperbarui data transaksi.");
+    }
+    }//GEN-LAST:event_btnEditTransaksiActionPerformed
+
+    private void btnDeleteTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteTransaksiActionPerformed
+            try {
+        String selectedKaryawan = cbkaryawan.getSelectedItem().toString();
+        String selectedProyek = cbproyek.getSelectedItem().toString();
+        
+        int karyawanId = getKaryawanId(selectedKaryawan);
+        int proyekId = getProyekId(selectedProyek);
+        
+            String sql = "DELETE FROM transaksi WHERE id_karyawan = ? AND id_proyek = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, karyawanId);
+            ps.setInt(2, proyekId);
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this, "Data berhasil di hapus");
+            loadDataTransaksiProyek();
+
+    } catch (SQLException e) {
+        System.out.println("Error Delete Data Transaksi: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error deleting transaksi data");
+    }
+    }//GEN-LAST:event_btnDeleteTransaksiActionPerformed
+
+    
+    private int getKaryawanId(String namaKaryawan) throws SQLException {
+    return getIdFromName("karyawan", "nama", namaKaryawan);
+}
+    private int getProyekId(String namaProyek) throws SQLException {
+    return getIdFromName("proyek", "NamaProyek", namaProyek);
+}
+    private int getIdFromName(String tableName, String columnName, String name) throws SQLException {
+    String sql = "SELECT id FROM " + tableName + " WHERE " + columnName + " = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, name);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new SQLException("ID not found for name: " + name);
+            }
+        }
+    }
+}
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(managemen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(managemen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(managemen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(managemen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new managemen().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField TFperan;
+    private javax.swing.JTextField Tf_NamaProyek;
+    private javax.swing.JTextField Tf_departemen;
+    private javax.swing.JTextField Tf_durasi;
+    private javax.swing.JTextField Tf_idProyek;
+    private javax.swing.JTextField Tf_jabatan;
+    private javax.swing.JButton btnDeleteProyek;
+    private javax.swing.JButton btnDeleteTransaksi;
+    private javax.swing.JButton btnEditProyek;
+    private javax.swing.JButton btnEditTransaksi;
+    private javax.swing.JButton btnTambahProyek;
+    private javax.swing.JButton btnTambahTransaksi;
+    private javax.swing.JButton btn_deleteKaryawan;
+    private javax.swing.JButton btn_editKaryawan;
+    private javax.swing.JButton btn_tambahKaryawan;
+    private javax.swing.JComboBox<String> cbkaryawan;
+    private javax.swing.JComboBox<String> cbproyek;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tbl_Transaksi;
+    private javax.swing.JTable tbl_karyawan;
+    private javax.swing.JTable tbl_proyek;
+    private javax.swing.JTextField tf_idKaryawan;
+    private javax.swing.JTextField tf_nama;
+    // End of variables declaration//GEN-END:variables
+}
